@@ -1,0 +1,23 @@
+FRESHMART ALL SECTORS — START HERE
+
+IMPORTANT: This ZIP has NO enclosing project folder. Extract its contents into a NEW folder named FreshMart_All_Sectors.
+
+After extraction, the folder you open in VS Code MUST directly contain:
+  package.json
+  index.html
+  README.md
+  src\main.jsx
+  src\style.css
+
+VS CODE STEPS (Windows):
+1. Create a new empty folder: Downloads\FreshMart_All_Sectors
+2. Extract ALL ZIP contents into that folder (not into another nested folder).
+3. In VS Code choose File > Open Folder and select Downloads\FreshMart_All_Sectors.
+4. Open Terminal > New Terminal.
+5. Run: dir
+   Confirm package.json appears in the list.
+6. Run: npm install
+7. Wait until it finishes and the PS prompt returns. Then run: npm run dev
+
+Do not type/paste npm run dev while npm install is still running.
+Node.js 18 or newer is required.
