@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Search, ShoppingBasket, MapPin, Clock3, ChevronDown, Plus, Minus, Heart, Star, ArrowRight, Menu, X, Leaf, Truck, ShieldCheck, Headphones, Trash2, CheckCircle2, Sparkles } from 'lucide-react';
 import './style.css';
@@ -194,7 +194,16 @@ const visible = useMemo(() => {
   return list;
 }, [category, query, sort]);
 function App(){
- const [category,setCategory]=useState('All'); const [query,setQuery]=useState(''); const [cart,setCart]=useState({}); const [cartOpen,setCartOpen]=useState(false); const [liked,setLiked]=useState([]); const [sort,setSort]=useState('featured'); const [notice,setNotice]=useState(''); const [mobileMenu,setMobileMenu]=useState(false); const [checkout,setCheckout]=useState(false);
+ const [cart, setCart] = useState(() => {
+  try {
+    return JSON.parse(localStorage.getItem('freshmart-cart') || '{}');
+  } catch {
+    return {};
+  }
+});
+  useEffect(() => {
+  localStorage.setItem('freshmart-cart', JSON.stringify(cart));
+}, [cart]);
  const visible=useMemo(()=>{let list=products.filter(p=>(category==='All'||p.category===category)&&p.name.toLowerCase().includes(query.toLowerCase())); if(sort==='low')list.sort((a,b)=>a.price-b.price); if(sort==='high')list.sort((a,b)=>b.price-a.price); if(sort==='rating')list.sort((a,b)=>b.rating-a.rating); return list;},[category,query,sort]);
  const count=Object.values(cart).reduce((a,b)=>a+b,0); const subtotal=products.reduce((s,p)=>s+p.price*(cart[p.id]||0),0); const delivery=subtotal===0||subtotal>=499?0:30; const total=subtotal+delivery;
  const add=(id)=>{setCart(c=>({...c,[id]:(c[id]||0)+1})); const p=products.find(x=>x.id===id); setNotice(`${p.name} added to basket`); setTimeout(()=>setNotice(''),1900)};
