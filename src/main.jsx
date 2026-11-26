@@ -172,7 +172,27 @@ const products = [
 ];
 const categories = [{name:"All",emoji:"🛒"}, {name:"Fruits",emoji:"🍎"}, {name:"Vegetables",emoji:"🥦"}, {name:"Dairy & Eggs",emoji:"🥛"}, {name:"Bakery",emoji:"🥐"}, {name:"Snacks",emoji:"🥜"}, {name:"Staples & Grains",emoji:"🌾"}, {name:"Beverages",emoji:"🧃"}, {name:"Personal Care",emoji:"🧴"}, {name:"Household",emoji:"🧽"}, {name:"Meat & Seafood",emoji:"🐟"}, {name:"Frozen Foods",emoji:"🍨"}, {name:"Baby & Kids",emoji:"🍼"}, {name:"Pet Supplies",emoji:"🐾"}, {name:"Home & Kitchen",emoji:"🍽️"}, {name:"Stationery & Office",emoji:"✏️"}, {name:"Health & Wellness",emoji:"💊"}, {name:"Beauty & Cosmetics",emoji:"💄"}, {name:"Organic & Health Foods",emoji:"🌱"}, {name:"Ready to Eat",emoji:"🍱"}, {name:"Spices & Masalas",emoji:"🌶️"}, {name:"Sauces & Spreads",emoji:"🥫"}, {name:"Pooja & Festival",emoji:"🪔"}, {name:"Baby Care",emoji:"🧸"}, {name:"Cleaning & Laundry",emoji:"🧹"}, {name:"Seafood & Frozen Meat",emoji:"🦐"}, {name:"Regional & International Foods",emoji:"🌏"}];
 const money = n => `₹${n.toLocaleString('en-IN')}`;
+const visible = useMemo(() => {
+  const searchTerm = query.trim().toLowerCase();
 
+  let list = products.filter(p => {
+    const matchesCategory =
+      category === 'All' || p.category === category;
+
+    const matchesSearch =
+      p.name.toLowerCase().includes(searchTerm) ||
+      p.category.toLowerCase().includes(searchTerm) ||
+      p.unit.toLowerCase().includes(searchTerm);
+
+    return matchesCategory && matchesSearch;
+  });
+
+  if (sort === 'low') list.sort((a, b) => a.price - b.price);
+  if (sort === 'high') list.sort((a, b) => b.price - a.price);
+  if (sort === 'rating') list.sort((a, b) => b.rating - a.rating);
+
+  return list;
+}, [category, query, sort]);
 function App(){
  const [category,setCategory]=useState('All'); const [query,setQuery]=useState(''); const [cart,setCart]=useState({}); const [cartOpen,setCartOpen]=useState(false); const [liked,setLiked]=useState([]); const [sort,setSort]=useState('featured'); const [notice,setNotice]=useState(''); const [mobileMenu,setMobileMenu]=useState(false); const [checkout,setCheckout]=useState(false);
  const visible=useMemo(()=>{let list=products.filter(p=>(category==='All'||p.category===category)&&p.name.toLowerCase().includes(query.toLowerCase())); if(sort==='low')list.sort((a,b)=>a.price-b.price); if(sort==='high')list.sort((a,b)=>b.price-a.price); if(sort==='rating')list.sort((a,b)=>b.rating-a.rating); return list;},[category,query,sort]);
